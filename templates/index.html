@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pelotina AI - Tu Asistente</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="contenedor-principal">
+        <!-- Zona Izquierda: El Personaje -->
+        <div class="zona-personaje">
+            <!-- NOTA: Aquí luego pondremos la imagen real de Pelotina -->
+            <div class="pelotina-placeholder">🎾 Pelotina AI</div>
+        </div>
+
+        <!-- Zona Derecha: El Chat -->
+        <div class="zona-chat">
+            <div class="cabecera-chat">
+                <h2>Pelotina AI</h2>
+                <span class="estado">🟢 Activa</span>
+            </div>
+            
+            <div class="historial-chat" id="historial-chat">
+                <div class="mensaje bot">¡Hola! Soy Pelotina. ¿En qué te ayudo hoy?</div>
+            </div>
+
+            <div class="zona-escribir">
+                <input type="text" id="entrada-mensaje" placeholder="Pregúntale a Pelotina..." onkeypress="manejarEnter(event)">
+                <button onclick="enviarMensaje()">Enviar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Lógica del Chat (JavaScript simple) -->
+    <script>
+        function manejarEnter(event) {
+            if (event.key === "Enter") enviarMensaje();
+        }
+
+        async function enviarMensaje() {
+            const input = document.getElementById("entrada-mensaje");
+            const mensaje = input.value;
+            if (mensaje.trim() === "") return;
+
+            // Mostrar mensaje del usuario
+            mostrarMensaje(mensaje, 'usuario');
+            input.value = "";
+
+            // Llamar a nuestro servidor Flask (app.py)
+            const respuesta = await fetch('/chat', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ mensaje: mensaje })
+            });
+            const datos = await respuesta.json();
+
+            // Mostrar respuesta de Pelotina
+            mostrarMensaje(datos.respuesta, 'bot');
+        }
+
+        function mostrarMensaje(texto, remitente) {
+            const historial = document.getElementById("historial-chat");
+            const div = document.createElement("div");
+            div.className = "mensaje " + remitente;
+            div.textContent = texto;
+            historial.appendChild(div);
+            historial.scrollTop = historial.scrollHeight; // Auto-scroll
+        }
+    </script>
+</body>
+</html>
