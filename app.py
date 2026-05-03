@@ -4,23 +4,9 @@ import requests
 app = Flask(__name__)
 
 # --- CONFIGURACIÓN ---
-# Tu URL de Ngrok actualizada:
+# Tu URL de Ngrok (asegúrate de que coincida con la que tienes abierta en Ubuntu)
 OLLAMA_URL = "https://coherent-facsimile-traverse.ngrok-free.dev/api/chat" 
-MODELO = "phi3" # Asegúrate de que este es el que tienes en Ollama (puedes cambiarlo por llama3, etc.)
-
-@app.route('/')
-def home():
-    return render_template('index.html')
-
-from flask import Flask, render_template, request, jsonify
-import requests
-
-app = Flask(__name__)
-
-# --- CONFIGURACIÓN ---
-# Tu URL de Ngrok actualizada:
-OLLAMA_URL = "https://coherent-facsimile-traverse.ngrok-free.dev/api/chat" 
-MODELO = "phi3" # Asegúrate de que este es el que tienes en Ollama (puedes cambiarlo por llama3, etc.)
+MODELO = "phi3" 
 
 @app.route('/')
 def home():
@@ -30,6 +16,11 @@ def home():
 def chat():
     datos = request.get_json()
     mensaje_usuario = datos.get('mensaje')
+    
+    # Esta es la CABECERA para evitar el error 403 de Ngrok
+    headers = {
+        "ngrok-skip-browser-warning": "true"
+    }
     
     payload = {
         "model": MODELO,
@@ -41,17 +32,14 @@ def chat():
     }
     
     try:
-        # Llamada a tu ordenador Ubuntu
-        r = requests.post(OLLAMA_URL, json=payload, timeout=60)
+        # Aquí añadimos 'headers=headers' para que Ngrok nos deje pasar
+        r = requests.post(OLLAMA_URL, json=payload, headers=headers, timeout=60)
         respuesta_ollama = r.json()['message']['content']
     except Exception as e:
-        respuesta_ollama = "¡Ay! Mi cerebro está desconectado. 🎾💤 Revisa que Ngrok y Ollama estén activos en tu PC."
+        # Si hay error, Pelotina avisará
+        respuesta_ollama = "¡Ay! Mi cerebro está desconectado. 🎾💤 Revisa que Ngrok y Ollama estén activos en tu Ubuntu."
 
     return jsonify({'respuesta': respuesta_ollama})
-
-if __name__ == '__main__':
-    app.run(debug=True)
-
 
 if __name__ == '__main__':
     app.run(debug=True)
