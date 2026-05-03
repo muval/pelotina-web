@@ -1,0 +1,115 @@
+body {
+    background-color: #e0eaf5;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+.contenedor-principal {
+    display: flex;
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(10px);
+    width: 80%;
+    max-width: 1000px;
+    height: 80vh;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    overflow: hidden;
+}
+
+.zona-personaje {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(135deg, #c3d9ef, #eaf2f8);
+}
+
+.pelotina-placeholder {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #4a6fa5;
+    background: white;
+    padding: 50px;
+    border-radius: 50%;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+}
+
+.zona-chat {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    background: #ffffff;
+}
+
+.cabecera-chat {
+    padding: 20px;
+    border-bottom: 1px solid #eee;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.cabecera-chat h2 { margin: 0; color: #333; }
+.estado { color: #2ecc71; font-weight: bold; font-size: 0.9em; }
+
+.historial-chat {
+    flex: 1;
+    padding: 20px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.mensaje {
+    max-width: 70%;
+    padding: 12px 18px;
+    border-radius: 20px;
+    line-height: 1.4;
+}
+
+.mensaje.bot {
+    background: #f1f0f0;
+    align-self: flex-start;
+    border-bottom-left-radius: 5px;
+}
+
+.mensaje.usuario {
+    background: #1976d2;
+    color: white;
+    align-self: flex-end;
+    border-bottom-right-radius: 5px;
+}
+
+.zona-escribir {
+    padding: 20px;
+    border-top: 1px solid #eee;
+    display: flex;
+    gap: 10px;
+}
+
+#entrada-mensaje {
+    flex: 1;
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 25px;
+    outline: none;
+    font-size: 1em;
+}
+
+button {
+    padding: 0 25px;
+    background: #1976d2;
+    color: white;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background 0.3s;
+}
+
+button:hover { background: #1565c0; }
